@@ -1,84 +1,80 @@
 ﻿using System;
 using System.Text;
+using System.Collections.Generic;
 
-public class OldPhonePad
+public class PhonePadTranslator
 {
-    public static void Main(string[] args)
+    private static readonly Dictionary<char, string> keyMap = new Dictionary<char, string>
     {
-        // Test cases
-        Console.WriteLine(InputString("33#")); // Output: E
-        Console.WriteLine(InputString("227*#")); // Output: B
-        Console.WriteLine(InputString("4433555 555666#")); // Output: HELLO
-        Console.WriteLine(InputString("8 88777444666*664#")); // Output: ?????
-    }
+        {'1', "&'("},
+        {'2', "ABC"},
+        {'3', "DEF"},
+        {'4', "GHI"},
+        {'5', "JKL"},
+        {'6', "MNO"},
+        {'7', "PQRS"},
+        {'8', "TUV"},
+        {'9', "WXYZ"},
+        {'0', " "},
+        {'*', ""},
+        {'#', ""}
+    };
 
-    public static string InputString(string input)
+    public static string OldPhonePad(string input)
     {
-        if (string.IsNullOrEmpty(input)) return string.Empty;
+        StringBuilder output = new StringBuilder();
+        int count = 0;
+        char currentKey = input[0];
 
-        StringBuilder result = new StringBuilder();
-        StringBuilder currentSequence = new StringBuilder();
-        char? lastChar = null;
-        DateTime lastPress = DateTime.MinValue;
-
-        foreach (char c in input)
+        for (int i = 0; i < input.Length; i++)
         {
+            char c = input[i];
             if (c == '#')
             {
-                if (currentSequence.Length > 0)
+                if (currentKey != ' ' && currentKey != '*' && currentKey != '#')
                 {
-                    result.Append(ConvertSequenceToChar(currentSequence.ToString()));
+                    string possibleChars = keyMap[currentKey];
+                    output.Append(possibleChars[(count - 1) % possibleChars.Length]);
                 }
                 break;
             }
-            if (c == '*')
+            if (c == ' ')
             {
-                if (result.Length > 0)
+                if (currentKey != ' ' && currentKey != '*' && currentKey != '#')
                 {
-                    result.Length--; // Remove last character
+                    string possibleChars = keyMap[currentKey];
+                    output.Append(possibleChars[(count - 1) % possibleChars.Length]);
                 }
-            }
-            else if (c == ' ')
-            {
-                if (currentSequence.Length > 0)
-                {
-                    result.Append(ConvertSequenceToChar(currentSequence.ToString()));
-                    currentSequence.Clear();
-                }
+                currentKey = c;
+                count = 0;
             }
             else
             {
-                if (lastChar == c && (DateTime.Now - lastPress).TotalMilliseconds < 1000)
+                if (currentKey == c)
                 {
-                    currentSequence.Append(c);
+                    count++;
                 }
                 else
                 {
-                    if (currentSequence.Length > 0)
+                    if (currentKey != ' ' && currentKey != '*' && currentKey != '#')
                     {
-                        result.Append(ConvertSequenceToChar(currentSequence.ToString()));
-                        currentSequence.Clear();
+                        string possibleChars = keyMap[currentKey];
+                        output.Append(possibleChars[(count - 1) % possibleChars.Length]);
                     }
-                    currentSequence.Append(c);
+                    currentKey = c;
+                    count = 1;
                 }
-                lastChar = c;
-                lastPress = DateTime.Now;
+            }
+            if (c == '*')
+            {
+                if (output.Length > 0)
+                {
+                    output.Length--;
+                }
+                continue;
             }
         }
 
-        return result.ToString();
-    }
-
-    private static char ConvertSequenceToChar(string sequence)
-    {
-        string[] mappings = new string[]
-        {
-            " ", "1", "ABC2", "DEF3", "GHI4", "JKL5", "MNO6", "PQRS7", "TUV8", "WXYZ9", "*", "0", "#"
-        };
-
-        int key = int.Parse(sequence[0].ToString());
-        int index = (sequence.Length - 1) % mappings[key].Length;
-
-        return mappings[key][index];
+        return output.ToString();
     }
 }

@@ -1,0 +1,73 @@
+# Fichiers de Bytecode .NET
+bin/
+obj/
+
+# Fichiers de Build et de Debug
+[Bb]in/
+[Oo]bj/
+[Ll]ogs/
+[Tt]est[Rr]esult*/
+
+# Fichiers générés par Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userprefs
+*.sln.docstates
+
+# Packages NuGet
+packages/
+*.nupkg
+*.nuspec
+
+# Fichiers de configuration de ReSharper
+_ReSharper.*/
+*ReSharper*/
+
+# Fichiers de configuration Rider
+.idea/
+
+# Fichiers de configuration de Visual Studio Code
+.vscode/
+
+# Dossier de sauvegarde avant mise à jour pour Visual Studio
+Backup*/
+*.mdf
+*.ldf
+*.ndf
+
+# Fichiers et dossiers de cache
+ipch/
+*.aps
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+*.cache
+*.ilk
+*.log
+*.dll
+*.exe
+*.pdb
+*.com
+*.xml
+*.axd
+
+# Autres fichiers et dossiers
+*.swp
+*~
+_ProjectSettings/
+*.pidb
+*.svclog
+*.scc
+
+# Fichiers spécifiques aux environnements
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
+
+# Fichiers de secrets (à ne jamais inclure dans le contrôle de version)
+*.secret
+secrets.json
